@@ -13,12 +13,14 @@ public class BerkeleyMaster
         
         // fazer a base da comunicação entre processos aqui??
         
+
+        //leitura de arquivo com as configurações aqui dentro ou em método separado?
     }
 
     public static void localEvent(Process p){
-        p.increaseClock();
         // Evento local: i [c,c,c,c,...] L, onde i é o ID do nodo local e 
         // [c,c,c,c,...] é o valor do relógio vetorial local;
+        p.increaseClock();
         System.out.print(p.id);
         p.toString;
         System.out.print(" L");
@@ -31,6 +33,7 @@ public class BerkeleyMaster
         // [c,c,c,c,...] é o valor do relógio vetorial enviado e d é o ID do nodo
         // destinatário da mensagem
         pSender.increaseClock();
+        pSender.updCV(pSender.id, pSender.localClock);
         System.out.print(pSender.id);
         pSender.toString;
         System.out.print(" S");
@@ -44,10 +47,11 @@ public class BerkeleyMaster
         //da mensagem, s é ID do nodo remetente da mensagem e t é o valor do
         //relógio lógico recebido com a mensagem.
         System.out.print(pReceiver.id);
-        //pSender.toString;     //->> tem que ser atualizado antes
+        pReceiver.updCV(pSender.id, pSender.localClock);
+        pSender.toString;     
         System.out.print(" R");
         System.out.print(pSender.id);
-        //System.out.print()    //-> ver de onde tem q sair esse t
+        System.out.print(pSender.localClock)    //-> ver de onde tem q sair esse t
         System.out.println();
     }
 }

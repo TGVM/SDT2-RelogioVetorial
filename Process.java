@@ -29,6 +29,7 @@ public class Process
 
     public void increaseClock(){
         localClock++;
+        Clocks.set(this.id, this.localClock);
     }
 
     public int getClock(){
@@ -37,6 +38,10 @@ public class Process
 
     public List<int> getVector(){
         return Clocks;
+    }
+
+    public void updCV(int index, int t){
+        Clocks.set(index, t);
     }
 
     public void toString(){
