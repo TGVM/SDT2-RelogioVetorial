@@ -21,10 +21,31 @@ public class BerkeleyMaster
         
 
         // fazer sorteio de eventos locais/mensagens
+        for(int i = 0; i<process.events; i++){
+            float chance = process.chance * 100;
+            int rng = (int)Math.floor(Math.random()*(100-0+1)+0);
+            float delay = Math.random()*(process.max_delay - process.min_delay + 1) + 0;
+            
+            
+            Timer timer = new Timer();
+            timer.scheduleAtFixedRate(new TimerTask() {
+                public void run() {
+                    if(rng < chance){
+                        System.out.print("");
+                        //ENVIO DE MENSAGENS
 
+                        // ver como fazer o recebimento de mensagens
+                    }else{
+                        localEvent(process);
+                    }
+                                
+                }
+            }, 0, delay);
+
+        }
         
         
-        // ver como fazer o recebimento de mensagens
+        
 
     }
 
