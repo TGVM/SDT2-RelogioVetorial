@@ -8,13 +8,48 @@ import java.net.MulticastSocket;
 public class BerkeleyMaster 
 {
     
+    public Process process;
+
     public static void main (String [] args)  throws IOException
     {
         
-        // fazer a base da comunicação entre processos aqui??
+        // fazer a base da comunicação distribuída entre processos aqui??
+        
+        Class clazz = FileOperationsTest.class;
+        InputStream inputStream = clazz.getResourceAsStream("/Configuracoes1.txt");
+        configProcess(inputStream, args[0]);
         
 
-        //leitura de arquivo com as configurações aqui dentro ou em método separado?
+        // fazer sorteio de eventos locais/mensagens
+
+        
+        
+        // ver como fazer o recebimento de mensagens
+
+    }
+
+    public static void configProcess(InputStream inputStream, int id){
+        /* 
+         * Ler arquivo e pegar conteúdo para configurar o processo
+        */
+
+        throws IOException {
+            StringBuilder resultStringBuilder = new StringBuilder();
+            try (BufferedReader br = new BufferedReader(new InputStreamReader(inputStream))) {
+                String line;
+                while ((line = br.readLine()) != null) {
+                    if(line[0]==id){
+                        break;
+                    }else{
+                        line = br.readLine();
+                    }
+                }
+            }
+        }
+        
+        process = new Process{id, line[1], line[2], line[3], line[4], line[5], line[6]};
+
+
     }
 
     public static void localEvent(Process p){
