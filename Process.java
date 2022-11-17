@@ -1,5 +1,7 @@
 import java.util.*;
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.MulticastSocket;
 
 public class Process 
 {
@@ -12,9 +14,14 @@ public class Process
     public int min_delay; // tempo mínimo de intervalo entre eventos (recomenda-se valores entre 100 e 300 ms)
     public int max_delay; // tempo máximo de intervalo entre eventos (recomenda-se valores entre 350 e 750 ms)
     private int localClock; // Relógio local
-    private List<int> Clocks; //Vetor com relógios de todos os processos
+    private List<Integer> Clocks; //Vetor com relógios de todos os processos
 
-    public Process(int id, String host, int port, float chance, int events, int min_delay, int max_delay){
+    private InetAddress group;
+    private MulticastSocket socket;
+
+
+
+    public Process(int id, String host, int port, float chance, int events, int min_delay, int max_delay, String group, int groupPort) throws IOException{
         this.id = id;
         this.host = host;
         this.port = port;
@@ -23,8 +30,16 @@ public class Process
         this.min_delay = min_delay;
         this.max_delay = max_delay;
         this.localClock = 0;
-        this.Clocks = new List<int>();
+        this.Clocks = new ArrayList<Integer>(10);
+        for(int i = 0; i<10; i++){
+            Clocks.add(i, -1);
+
+        }
         Clocks.add(id, localClock);
+
+        this.socket = new MulticastSocket(groupPort);
+        this.group = InetAddress.getByName(group);
+        socket.joinGroup(this.group);
     }
 
     public void increaseClock(){
@@ -36,7 +51,7 @@ public class Process
         return localClock;
     }
 
-    public List<int> getVector(){
+    public List<Integer> getVector(){
         return Clocks;
     }
 
@@ -44,12 +59,15 @@ public class Process
         Clocks.set(index, t);
     }
 
-    public void toString(){
-        System.out.print("[");
-        foreach(c in Clocks){
-            System.out.print(c+", ");
+    @Override
+    public String toString(){
+        String res = "";
+        res+="[";
+        for(Integer c : Clocks){
+            res+=c+", ";
         }
-        System.out.print("]");
+        res+=("]");
+        return res;
     }
     
 }
